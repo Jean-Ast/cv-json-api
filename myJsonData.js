@@ -1,4 +1,5 @@
-let cvJson = {
+let cvJson = 
+{
   "basics": {
     "name": "Jean Carlos Astacio",
     "label": "student",
