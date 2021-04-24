@@ -1,4 +1,4 @@
-{
+let cvJson = {
   "basics": {
     "name": "Jean Carlos Astacio",
     "label": "student",
@@ -117,3 +117,5 @@
     }
   ]
 }
+
+module.exports = cvJson;
