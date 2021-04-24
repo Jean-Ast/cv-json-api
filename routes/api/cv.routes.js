@@ -37,5 +37,19 @@ router.put("/:session", (req, resp) => {
     resp.send(cvJson);
 })
 // 4) DELETE
+router.delete("/:session", (req, resp) => {
+    // console.log(req.params.session)
+    // Find session
+    const sessiontoUpd = req.params.session
+    var result = cvJson[sessiontoUpd];
+    var newSession = req.body;
+    Object.keys(cvJson).forEach( (key) => {
+        if (cvJson[key] === result) {
+            // Delete session
+            delete cvJson[key]
+        }
+    })
+    resp.send(cvJson);
+})
 
 module.exports = router;
