@@ -63,21 +63,35 @@ router.post("/", (req, resp) => {
 });
 // 3) PUT
 router.put("/:session", (req, resp) => {
-  // Find session
-  const sessiontoUpd = req.params.session;
-  var result = cvJson[sessiontoUpd];
-  var newSession = req.body;
-  // Iterate cvJson
-  Object.keys(cvJson).forEach((key) => {
-    if (cvJson[key] === result) {
-      // Delete session
-      delete cvJson[key];
-      // Insert session modified
-      cvJson[key] = newSession;
+  if (req.headers.authorization === undefined) {
+    resp.status(401).send("Please provide basic auth in headers with base64 encoding");
+  } else {
+    // Encode request value headers
+    var encodedReq = req.headers.authorization.split(" ")[1];
+    // Decode request value headers
+    var decodeReq = new Buffer(encodedReq, "base64").toString();
+    var userName = decodeReq.split(":")[0];
+    var password = decodeReq.split(":")[1];
+
+    // Valide credentials with correct userName and correct password
+    if (userInfo.username.toLowerCase() === userName.toLowerCase() && userInfo.password === password) {
+
+      // Find session
+      const sessiontoUpd = req.params.session;
+      var result = cvJson[sessiontoUpd];
+      var newSession = req.body;
+      // Iterate cvJson
+      Object.keys(cvJson).forEach((key) => {
+        if (cvJson[key] === result) {
+          // Delete session
+          delete cvJson[key];
+          // Insert session modified
+          cvJson[key] = newSession;
+        }
+      });
+      resp.send(cvJson);
     }
-  });
-  resp.send(cvJson);
-});
+}});
 // 4) DELETE
 router.delete("/:session", (req, resp) => {
   // Find session
