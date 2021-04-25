@@ -6,6 +6,10 @@ var cvJson = require("../../myJsonData");
 router.get("/", (req, resp) => {
   resp.send(cvJson);
 });
+// 1.1) GET Ruta navegable => cv.session
+router.get("/:session", () => {
+
+})
 // 2) POST a new session
 router.post("/", (req, resp) => {
   try {
