@@ -7,8 +7,24 @@ router.get("/", (req, resp) => {
   resp.send(cvJson);
 });
 // 1.1) GET Ruta navegable => cv.session
-router.get("/:session", () => {
+router.get("/:session", (req, resp) => {
+  // console.log(req.params);
+  // resp.send(req.params);
+  let mySession = req.params.session;
+  resp.send(cvJson[mySession]);
+})
 
+// 1.2 GET Ruta navegable => cv.session.subSession
+router.get("/:session/subsession/:mysubsession", (req, resp) => {
+  // resp.send(req.params)
+  // Retrive params
+  let _mysession = req.params.session;
+  let _mysubsession = req.params.mysubsession;
+  // Create a new cvJson to access a subsession
+  let newcvJson = cvJson[_mysession];
+  let completeSubsession = newcvJson[_mysubsession];
+  // Send the new cvJson subsession
+  resp.send(completeSubsession)
 })
 // 2) POST a new session
 router.post("/", (req, resp) => {
