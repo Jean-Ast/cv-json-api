@@ -146,5 +146,36 @@ router.delete("/:session", (req, resp) => {
     }
   }
 });
+// 5) PATCH
+router.patch("/:session/subsession/:mysubsession", (req, resp) => {
+  if (req.headers.authorization === undefined) {
+    resp
+      .status(401)
+      .send("Please provide basic auth in headers with base64 encoding");
+  } else {
+    // Encode request value headers
+    var encodedReq = req.headers.authorization.split(" ")[1];
+    // Decode request value headers
+    var decodeReq = new Buffer(encodedReq, "base64").toString();
+    var userName = decodeReq.split(":")[0];
+    var password = decodeReq.split(":")[1];
+  // Valide credentials with correct userName and correct password
+  if (
+    userInfo.username.toLowerCase() === userName.toLowerCase() &&
+    userInfo.password === password
+  ) {
+    let myRespEtag = etag(JSON.stringify(cvJson));
+    let myReqEtag = req.params.subsession;
 
+    let mysession = req.params.session;
+    let mysbsession = req.params.mysubsession;
+
+    let newcvJson = cvJson[mysession];
+    if (myReqEtag === myRespEtag) {
+      cvJson[newcvJson] = req.body
+    }
+  }
+  // resp.setHeader("Etag", etag(JSON.stringify(newcvJson[mysbsession])));
+  resp.send(cvJson);
+})
 module.exports = router;
