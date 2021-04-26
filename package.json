@@ -4,6 +4,7 @@
   "description": "Final Project Web Development",
   "main": "main.js",
   "dependencies": {
+    "etag": "^1.8.1",
     "express": "^4.17.1"
   },
   "devDependencies": {

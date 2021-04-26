@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 var cvJson = require("../../myJsonData");
+const etag = require("etag");
 
 // User Info to login
 const userInfo = {
@@ -102,6 +103,7 @@ router.put("/:session", (req, resp) => {
           cvJson[key] = newSession;
         }
       });
+      resp.header("Etag", etag(JSON.stringify(cvJson)));
       resp.send(cvJson);
     }
   }
