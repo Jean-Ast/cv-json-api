@@ -11,6 +11,7 @@ const userInfo = {
 
 // 1) GET
 router.get("/", (req, resp) => {
+  resp.setHeader("Etag", etag(JSON.stringify(cvJson)))
   resp.send(cvJson);
 });
 // 1.1) GET Ruta navegable => cv.session
@@ -18,6 +19,7 @@ router.get("/:session", (req, resp) => {
   // console.log(req.params);
   // resp.send(req.params);
   let mySession = req.params.session;
+  resp.setHeader("Etag", etag(JSON.stringify(cvJson)))
   resp.send(cvJson[mySession]);
 });
 
@@ -31,6 +33,7 @@ router.get("/:session/subsession/:mysubsession", (req, resp) => {
   let newcvJson = cvJson[_mysession];
   let completeSubsession = newcvJson[_mysubsession];
   // Send the new cvJson subsession
+  resp.setHeader("Etag", etag(JSON.stringify(cvJson)))
   resp.send(completeSubsession);
 });
 
@@ -61,6 +64,7 @@ router.post("/", (req, resp) => {
       } catch (err) {
         console.log(err);
       }
+      resp.setHeader("Etag", etag(JSON.stringify(cvJson)))
       resp.send(cvJson);
     } else {
       resp
@@ -137,6 +141,7 @@ router.delete("/:session", (req, resp) => {
           delete cvJson[key];
         }
       });
+      resp.setHeader("Etag", etag(JSON.stringify(cvJson)))
       resp.send(cvJson);
     }
   }

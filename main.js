@@ -1,3 +1,4 @@
+const etag = require("etag");
 const express = require("express");
 const mwLogger = require("./middlewares/mwLogger");
 const app = express();
@@ -5,7 +6,7 @@ const port = process.env.port || 5050
 
 // Init Middleware
 app.use(mwLogger);
-
+app.set(etag,"strong") // Using strong etags
 app.use(express.json());
 app.use(express.urlencoded({extended: false})); // To work with Json format
 
